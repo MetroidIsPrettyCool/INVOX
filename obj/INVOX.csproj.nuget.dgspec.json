@@ -1,0 +1,70 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/joseph/INVOX/INVOX.csproj": {}
+  },
+  "projects": {
+    "/home/joseph/INVOX/INVOX.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/joseph/INVOX/INVOX.csproj",
+        "projectName": "INVOX",
+        "projectPath": "/home/joseph/INVOX/INVOX.csproj",
+        "packagesPath": "/home/joseph/.nuget/packages/",
+        "outputPath": "/home/joseph/INVOX/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/joseph/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "opentk": {
+              "target": "Package",
+              "version": "[4.0.6, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.1.8, 3.1.8]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.108/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
