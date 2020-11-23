@@ -34,12 +34,21 @@ namespace INVOX {
         }
 
         protected override void OnUpdateFrame (FrameEventArgs e) {
+
+	    if (KeyboardState.IsKeyPressed(Keys.GraveAccent)) {
+		CursorGrabbed = !CursorGrabbed;
+		if (!CursorGrabbed) CursorVisible = true;
+	    }
 	    
             if (KeyboardState.IsKeyDown(Keys.Q)) Close();
-	    if (KeyboardState.IsKeyPressed(Keys.F1)) {
-		CursorGrabbed = !CursorGrabbed;
-	        if (!CursorGrabbed) CursorVisible = true;
-	    }
+	    
+	    // Temp camera controls
+	    if (KeyboardState.IsKeyDown(Keys.W)) camera.Position += camera.Front * .1f;
+	    if (KeyboardState.IsKeyDown(Keys.S)) camera.Position -= camera.Front * .1f;
+	    if (KeyboardState.IsKeyDown(Keys.A)) camera.Position -= camera.Right * .1f;
+	    if (KeyboardState.IsKeyDown(Keys.D)) camera.Position += camera.Right * .1f;
+	    if (KeyboardState.IsKeyDown(Keys.Space)) camera.Position += camera.Up * .1f;
+	    if (KeyboardState.IsKeyDown(Keys.LeftShift)) camera.Position -= camera.Up * .1f;
 	    
             base.OnUpdateFrame(e);
         }
@@ -47,6 +56,8 @@ namespace INVOX {
         protected override void OnLoad () {
 	    GL.ClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 	    GL.Enable(EnableCap.DepthTest);
+
+	    System.Console.WriteLine(IsMultiThreaded);
 	    
 	    CursorGrabbed = true;
 	    	    

@@ -11,7 +11,7 @@ namespace INVOX {
 
 	public Vector3 Position {
 	    get => _position;
-	    private set {
+	    set {
 		_position = value;
 	    }
 	}
@@ -20,14 +20,14 @@ namespace INVOX {
 	
 	public float Pitch {
             get => MathHelper.RadiansToDegrees(_pitch);
-            private set {
+            set {
                 _pitch = MathHelper.DegreesToRadians(MathHelper.Clamp(value, -90f, 90f));
 		_UpdateVectors();
             }
         }
 	public float Yaw {
             get => MathHelper.RadiansToDegrees(_yaw);
-            private set {
+            set {
                 _yaw = MathHelper.DegreesToRadians(value % 360);
                 _UpdateVectors();
             }
@@ -35,14 +35,14 @@ namespace INVOX {
 	
 	public float Fov {
             get => MathHelper.RadiansToDegrees(_fov);
-            private set {
+            set {
                 _fov = MathHelper.DegreesToRadians(MathHelper.Clamp(value, 0f, 120f));
             }
         }
 
 	public float Aspect {
 	    get => _aspect;
-	    private set {
+	    set {
 		_aspect = value;
 	    }
 	}
@@ -51,6 +51,11 @@ namespace INVOX {
 	private Vector3 _right =  Vector3.UnitX;
 	private Vector3 _up    =  Vector3.UnitY;
 
+	// Temporary, entities will keep track of most this 
+	public Vector3 Front {get => _front;}
+	public Vector3 Right {get => _right;}
+	public Vector3 Up {get => _up;}
+	
 	public Camera (Vector3 position) {
 	    Position = position;
 	    Pitch = 0;
