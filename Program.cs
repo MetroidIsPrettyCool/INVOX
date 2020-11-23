@@ -11,6 +11,8 @@ namespace INVOX {
             nativeWindowSettings.Size = new Vector2i(1280, 720);
             nativeWindowSettings.Title = "INVOX";
 
+	    gameWindowSettings.UpdateFrequency = 20;
+
             using (Window window = new Window(gameWindowSettings, nativeWindowSettings)) {
                 window.Run();
             }

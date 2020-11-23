@@ -3,10 +3,11 @@ using System.IO;
 using System.Text;
 
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 
 namespace INVOX {
     public class Shader : IDisposable {
-        int Handle;
+        public readonly int Handle;
 
         public Shader (string vertexPath, string fragmentPath) {
             string VertexShaderSource;
@@ -55,6 +56,10 @@ namespace INVOX {
         public void Use () {
             GL.UseProgram(Handle);
         }
+
+	public static void setMat4 (int handle, Matrix4 mat4, string name) {
+	    GL.UniformMatrix4(GL.GetUniformLocation(handle, name), true, ref mat4);
+	}
 
         private bool disposedValue = false;
 
