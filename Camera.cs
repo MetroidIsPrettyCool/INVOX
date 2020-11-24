@@ -6,7 +6,7 @@ namespace INVOX {
 
 	private static float _near = 0.01f;
 	private static float _far = 100f;
-	
+
 	public Vector3 _position;
 
 	public Vector3 Position {
@@ -21,7 +21,7 @@ namespace INVOX {
 	public float Pitch {
             get => MathHelper.RadiansToDegrees(_pitch);
             set {
-                _pitch = MathHelper.DegreesToRadians(MathHelper.Clamp(value, -90f, 90f));
+		_pitch = MathHelper.DegreesToRadians(MathHelper.Clamp(value, -89.9f, 89.9f));
 		_UpdateVectors();
             }
         }
@@ -39,7 +39,7 @@ namespace INVOX {
                 _fov = MathHelper.DegreesToRadians(MathHelper.Clamp(value, 0f, 120f));
             }
         }
-
+	
 	public float Aspect {
 	    get => _aspect;
 	    set {
