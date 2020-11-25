@@ -45,15 +45,15 @@ namespace INVOX {
 	    
 	    // Temp camera controls
 	    if (CursorGrabbed) {
-		if (KeyboardState.IsKeyDown(Keys.W)) camera.Position += camera.Front * .1f;
-		if (KeyboardState.IsKeyDown(Keys.S)) camera.Position -= camera.Front * .1f;
-		if (KeyboardState.IsKeyDown(Keys.A)) camera.Position -= camera.Right * .1f;
-		if (KeyboardState.IsKeyDown(Keys.D)) camera.Position += camera.Right * .1f;
-		if (KeyboardState.IsKeyDown(Keys.Space)) camera.Position += camera.Up * .1f;
-		if (KeyboardState.IsKeyDown(Keys.LeftShift)) camera.Position -= camera.Up * .1f;
+		if (KeyboardState.IsKeyDown(Keys.W)) camera.Position += camera.Front * (float)e.Time * 2.5f;
+		if (KeyboardState.IsKeyDown(Keys.S)) camera.Position -= camera.Front * (float)e.Time * 2.5f;
+		if (KeyboardState.IsKeyDown(Keys.A)) camera.Position -= camera.Right * (float)e.Time * 2.5f;
+		if (KeyboardState.IsKeyDown(Keys.D)) camera.Position += camera.Right * (float)e.Time * 2.5f;
+		if (KeyboardState.IsKeyDown(Keys.Space)) camera.Position += camera.Up * (float)e.Time * 2.5f;
+		if (KeyboardState.IsKeyDown(Keys.LeftShift)) camera.Position -= camera.Up * (float)e.Time * 2.5f;
 
-		camera.Pitch -= MouseState.Delta.Y * 0.2f;
-		camera.Yaw += MouseState.Delta.X * 0.2f;
+		camera.Pitch -= MouseState.Delta.Y * (float)e.Time * 3.5f;
+		camera.Yaw += MouseState.Delta.X * (float)e.Time * 3.5f;
 	    }
 	    
             base.OnUpdateFrame(e);
@@ -62,8 +62,6 @@ namespace INVOX {
         protected override void OnLoad () {
 	    GL.ClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 	    GL.Enable(EnableCap.DepthTest);
-
-	    System.Console.WriteLine(IsMultiThreaded);
 	    
 	    CursorGrabbed = true;
 	    	    
