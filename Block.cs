@@ -55,7 +55,7 @@ namespace INVOX {
 	}
 	
 	private Color4 getFaceColor(int face) {
-	    float lightness = (lighting + 15 - (face != (int)Constants.Face.D ? face % 2 : 3)) / 30f;
+	    float lightness = (lighting + 15 - (face != (int)Constants.Face.D ? (face / 2) * 2 : 6)) / 30f;
 	    //System.Console.WriteLine(lightness);
 	    return new Color4(lightness, 0, 0, 1);
 	}
