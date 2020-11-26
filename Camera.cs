@@ -5,7 +5,7 @@ namespace INVOX {
     class Camera {
 
 	private static float _near = 0.01f;
-	private static float _far = 100f;
+	private static float _far = 500f;
 
 	public Vector3 _position;
 

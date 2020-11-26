@@ -15,19 +15,15 @@ namespace INVOX {
 	// Temp camera for testing
 	Camera camera;
 
-	// Temp meshes for testing
-	TerrainMesh mesh;
-	TerrainMesh mesh2;
-	TerrainMesh mesh3;
+	// Temp level for testing
+	Level testLevel;
 	
 	public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base (gameWindowSettings, nativeWindowSettings) { }
 
         protected override void OnRenderFrame (FrameEventArgs e) {
 	    GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-	    mesh.drawMesh(terrainShader, camera);
-	    mesh2.drawMesh(terrainShader, camera);
-	    mesh3.drawMesh(terrainShader, camera);
+	    testLevel.drawLevel(terrainShader, camera);
 	    
             SwapBuffers();
 
@@ -45,15 +41,15 @@ namespace INVOX {
 	    
 	    // Temp camera controls
 	    if (CursorGrabbed) {
-		if (KeyboardState.IsKeyDown(Keys.W)) camera.Position += camera.Front * (float)e.Time * 2.5f;
-		if (KeyboardState.IsKeyDown(Keys.S)) camera.Position -= camera.Front * (float)e.Time * 2.5f;
-		if (KeyboardState.IsKeyDown(Keys.A)) camera.Position -= camera.Right * (float)e.Time * 2.5f;
-		if (KeyboardState.IsKeyDown(Keys.D)) camera.Position += camera.Right * (float)e.Time * 2.5f;
-		if (KeyboardState.IsKeyDown(Keys.Space)) camera.Position += camera.Up * (float)e.Time * 2.5f;
-		if (KeyboardState.IsKeyDown(Keys.LeftShift)) camera.Position -= camera.Up * (float)e.Time * 2.5f;
+		if (KeyboardState.IsKeyDown(Keys.W)) camera.Position += camera.Front * (float)e.Time * 5.5f;
+		if (KeyboardState.IsKeyDown(Keys.S)) camera.Position -= camera.Front * (float)e.Time * 5.5f;
+		if (KeyboardState.IsKeyDown(Keys.A)) camera.Position -= camera.Right * (float)e.Time * 5.5f;
+		if (KeyboardState.IsKeyDown(Keys.D)) camera.Position += camera.Right * (float)e.Time * 5.5f;
+		if (KeyboardState.IsKeyDown(Keys.Space)) camera.Position += camera.Up * (float)e.Time * 5.5f;
+		if (KeyboardState.IsKeyDown(Keys.LeftShift)) camera.Position -= camera.Up * (float)e.Time * 5.5f;
 
-		camera.Pitch -= MouseState.Delta.Y * (float)e.Time * 3.5f;
-		camera.Yaw += MouseState.Delta.X * (float)e.Time * 3.5f;
+		camera.Pitch -= MouseState.Delta.Y * 0.3f;
+		camera.Yaw += MouseState.Delta.X * 0.3f;
 	    }
 	    
             base.OnUpdateFrame(e);
@@ -62,6 +58,7 @@ namespace INVOX {
         protected override void OnLoad () {
 	    GL.ClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 	    GL.Enable(EnableCap.DepthTest);
+	    GL.Enable(EnableCap.CullFace);
 	    
 	    CursorGrabbed = true;
 	    	    
@@ -69,9 +66,7 @@ namespace INVOX {
 
 	    camera = new Camera(new Vector3(1.5f, 1.5f, 1.5f));
 
-	    mesh = new TerrainMesh(Matrix4.Identity);
-	    mesh2 = new TerrainMesh(Matrix4.CreateScale(2.0f) * Matrix4.CreateTranslation(-1.3f, -2.5f, 0));
-	    mesh3 = new TerrainMesh(Matrix4.CreateFromAxisAngle(new Vector3(.5f, 0, .5f), 1.5f) * Matrix4.CreateTranslation(-4, 2, 3));
+	    testLevel = new Level();
 	    
 	    base.OnLoad();
         }
