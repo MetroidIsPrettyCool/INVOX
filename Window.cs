@@ -17,12 +17,36 @@ namespace INVOX {
 
 	// Temp level for testing
 	Level testLevel;
+
+	// Temp for now, will eventually move into a seperate thread / class
+	int x = 0, y = 0, z = 0;
+	bool genMeshes = true;
 	
 	public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base (gameWindowSettings, nativeWindowSettings) { }
 
         protected override void OnRenderFrame (FrameEventArgs e) {
 	    GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+	    // The game will attempt to generate four meshes per frame
+	    
+	    if (genMeshes) for (int i = 0; i != 4; i++) {
+		if (genMeshes) {
+		    testLevel.generateMeshAt(x, y, z);
+		    x++;
+		    if (x == Constants.levelSizeX / Constants.terrainMeshSize) {
+			y++;
+			x = 0;
+		    }
+		    if (y == Constants.levelSizeY / Constants.terrainMeshSize) {
+			z++;
+			y = 0;
+		    }
+		    if (z == Constants.levelSizeZ / Constants.terrainMeshSize) {
+			genMeshes = false;
+		    }
+		}
+	    }
+	    
 	    testLevel.drawLevel(terrainShader, camera);
 	    
             SwapBuffers();

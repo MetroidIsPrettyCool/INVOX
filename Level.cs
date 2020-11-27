@@ -37,19 +37,14 @@ namespace INVOX {
 		    }
 		}
 	    }
-	    
-	    Console.WriteLine("Generating meshes...");
-	    
-	    for (int mx = 0; mx != meshes.GetLength(0); mx++) {
-		for (int my = 0; my != meshes.GetLength(1); my++) {
-		    for (int mz = 0; mz != meshes.GetLength(2); mz++) {
-			meshes [mx, my, mz] = new TerrainMesh(blocks, mx, my, mz);
-			Console.WriteLine("Generated mesh @ " + mx + "," + my + "," + mz);
-		    }
-		}
-	    }
 	    Console.WriteLine("Level generated");
 	}
+
+	public void generateMeshAt (int x, int y, int z) {
+	    meshes [x, y, z] = new TerrainMesh(blocks, x, y, z);
+	    Console.WriteLine("Generated mesh @ " + x + "," + y + "," + z);
+	}
+	
 	public void drawLevel (Shader shader, Camera camera) {
 	    foreach (TerrainMesh mesh in meshes) {
 		if (mesh != null)

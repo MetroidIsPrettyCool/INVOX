@@ -14,8 +14,8 @@ namespace INVOX {
 	private readonly int meshEBO;
 	private readonly int positionVBO, colorVBO, shimmerVBO;
 
-	private readonly int vertexCount;
-	private readonly int indexCount;
+	private int vertexCount;
+	private int indexCount;
 	
 	private readonly Matrix4 modelMatrix;
 
@@ -42,155 +42,33 @@ namespace INVOX {
 		for (int y = offY; y != Constants.terrainMeshSize + offY; y++) {
 		    for (int z = offZ; z != Constants.terrainMeshSize + offZ; z++) {
 			if (blocks [x,y,z].isntAir && (blocks [x,y,z].visibility & 128) != 0) {
-			    if ((blocks [x, y, z].visibility & 1) != 0) {
-				// Add face vertexes
-				for (int i = 0; i != 4; i++) {
-				    positions.Add(Constants.uFaceVertices [i * 3]     + (x % Constants.terrainMeshSize));
-				    positions.Add(Constants.uFaceVertices [i * 3 + 1] + (y % Constants.terrainMeshSize));
-				    positions.Add(Constants.uFaceVertices [i * 3 + 2] + (z % Constants.terrainMeshSize));
-				}
+			    // Go through each face and check it's visibility, and if it's visible, add it to the mesh
+			    for (int i = 0; i != 6; i++) {
+				if ((blocks [x, y, z].visibility & (1 << i)) != 0) {
+				    // Add face vertexes
+				    for (int j = 0; j != 4; j++) {
+					positions.Add(Constants.faceVertices [i] [j * 3]     + (x % Constants.terrainMeshSize));
+					positions.Add(Constants.faceVertices [i] [j * 3 + 1] + (y % Constants.terrainMeshSize));
+					positions.Add(Constants.faceVertices [i] [j * 3 + 2] + (z % Constants.terrainMeshSize));
+				    }
 
-				for (int i = 0; i != 4; i++) {
-				    colors.Add(1);
-				    colors.Add(0);
-				    colors.Add(0);
-				    colors.Add(1);
-				}
+				    for (int j = 0; j != 4; j++) {
+					colors.Add(i == 3 ? .9f : (30 - (i / 2))/30f);
+					colors.Add(0);
+					colors.Add(0);
+					colors.Add(1);
+				    }
 
-				vertexIndices.Add(3 + (uint)vertexCount);
-				vertexIndices.Add(1 + (uint)vertexCount);
-				vertexIndices.Add(0 + (uint)vertexCount);
-				vertexIndices.Add(0 + (uint)vertexCount);
-				vertexIndices.Add(1 + (uint)vertexCount);
-				vertexIndices.Add(2 + (uint)vertexCount);
+				    vertexIndices.Add(3 + (uint)vertexCount);
+				    vertexIndices.Add(1 + (uint)vertexCount);
+				    vertexIndices.Add(0 + (uint)vertexCount);
+				    vertexIndices.Add(0 + (uint)vertexCount);
+				    vertexIndices.Add(1 + (uint)vertexCount);
+				    vertexIndices.Add(2 + (uint)vertexCount);
 				
-				vertexCount += 4;
-				indexCount += 6;
-			    }
-			    if ((blocks [x, y, z].visibility & 2) != 0) {
-				// Add face vertexes
-			        for (int i = 0; i != 4; i++) {
-				    positions.Add(Constants.dFaceVertices [i * 3]     + (x % Constants.terrainMeshSize));
-				    positions.Add(Constants.dFaceVertices [i * 3 + 1] + (y % Constants.terrainMeshSize));
-				    positions.Add(Constants.dFaceVertices [i * 3 + 2] + (z % Constants.terrainMeshSize));
+				    vertexCount += 4;
+				    indexCount += 6;
 				}
-
-				for (int i = 0; i != 4; i++) {
-				    colors.Add(0.9f);
-				    colors.Add(0);
-				    colors.Add(0);
-				    colors.Add(1);
-				}
-
-				vertexIndices.Add(3 + (uint)vertexCount);
-				vertexIndices.Add(1 + (uint)vertexCount);
-				vertexIndices.Add(0 + (uint)vertexCount);
-				vertexIndices.Add(0 + (uint)vertexCount);
-				vertexIndices.Add(1 + (uint)vertexCount);
-				vertexIndices.Add(2 + (uint)vertexCount);
-				
-				vertexCount += 4;
-				indexCount += 6;
-			    }
-			    if ((blocks [x, y, z].visibility & 4) != 0) {
-				// Add face vertexes
-			        for (int i = 0; i != 4; i++) {
-				    positions.Add(Constants.eFaceVertices [i * 3]     + (x % Constants.terrainMeshSize));
-				    positions.Add(Constants.eFaceVertices [i * 3 + 1] + (y % Constants.terrainMeshSize));
-				    positions.Add(Constants.eFaceVertices [i * 3 + 2] + (z % Constants.terrainMeshSize));
-				}
-
-				for (int i = 0; i != 4; i++) {
-				    colors.Add(0.9666666f);
-				    colors.Add(0);
-				    colors.Add(0);
-				    colors.Add(1);
-				}
-
-				vertexIndices.Add(3 + (uint)vertexCount);
-				vertexIndices.Add(1 + (uint)vertexCount);
-				vertexIndices.Add(0 + (uint)vertexCount);
-				vertexIndices.Add(0 + (uint)vertexCount);
-				vertexIndices.Add(1 + (uint)vertexCount);
-				vertexIndices.Add(2 + (uint)vertexCount);
-				
-				vertexCount += 4;
-				indexCount += 6;
-			    }
-			    if ((blocks [x, y, z].visibility & 8) != 0) {
-				// Add face vertexes
-			        for (int i = 0; i != 4; i++) {
-				    positions.Add(Constants.wFaceVertices [i * 3]     + (x % Constants.terrainMeshSize));
-				    positions.Add(Constants.wFaceVertices [i * 3 + 1] + (y % Constants.terrainMeshSize));
-				    positions.Add(Constants.wFaceVertices [i * 3 + 2] + (z % Constants.terrainMeshSize));
-				}
-
-				for (int i = 0; i != 4; i++) {
-				    colors.Add(0.9666666f);
-				    colors.Add(0);
-				    colors.Add(0);
-				    colors.Add(1);
-				}
-
-				vertexIndices.Add(3 + (uint)vertexCount);
-				vertexIndices.Add(1 + (uint)vertexCount);
-				vertexIndices.Add(0 + (uint)vertexCount);
-				vertexIndices.Add(0 + (uint)vertexCount);
-				vertexIndices.Add(1 + (uint)vertexCount);
-				vertexIndices.Add(2 + (uint)vertexCount);
-				
-				vertexCount += 4;
-				indexCount += 6;
-			    }
-			    if ((blocks [x, y, z].visibility & 16) != 0) {
-				// Add face vertexes
-			        for (int i = 0; i != 4; i++) {
-				    positions.Add(Constants.nFaceVertices [i * 3]     + (x % Constants.terrainMeshSize));
-				    positions.Add(Constants.nFaceVertices [i * 3 + 1] + (y % Constants.terrainMeshSize));
-				    positions.Add(Constants.nFaceVertices [i * 3 + 2] + (z % Constants.terrainMeshSize));
-				}
-
-				for (int i = 0; i != 4; i++) {
-				    colors.Add(0.93333333f);
-				    colors.Add(0);
-				    colors.Add(0);
-				    colors.Add(1);
-				}
-
-				vertexIndices.Add(3 + (uint)vertexCount);
-				vertexIndices.Add(1 + (uint)vertexCount);
-				vertexIndices.Add(0 + (uint)vertexCount);
-				vertexIndices.Add(0 + (uint)vertexCount);
-				vertexIndices.Add(1 + (uint)vertexCount);
-				vertexIndices.Add(2 + (uint)vertexCount);
-				
-				vertexCount += 4;
-				indexCount += 6;
-			    }
-			    if ((blocks [x, y, z].visibility & 32) != 0) {
-				// Add face vertexes
-			        for (int i = 0; i != 4; i++) {
-				    positions.Add(Constants.sFaceVertices [i * 3]     + (x % Constants.terrainMeshSize));
-				    positions.Add(Constants.sFaceVertices [i * 3 + 1] + (y % Constants.terrainMeshSize));
-				    positions.Add(Constants.sFaceVertices [i * 3 + 2] + (z % Constants.terrainMeshSize));
-				}
-
-				for (int i = 0; i != 4; i++) {
-				    colors.Add(0.93333333f);
-				    colors.Add(0);
-				    colors.Add(0);
-				    colors.Add(1);
-				}
-
-				vertexIndices.Add(3 + (uint)vertexCount);
-				vertexIndices.Add(1 + (uint)vertexCount);
-				vertexIndices.Add(0 + (uint)vertexCount);
-				vertexIndices.Add(0 + (uint)vertexCount);
-				vertexIndices.Add(1 + (uint)vertexCount);
-				vertexIndices.Add(2 + (uint)vertexCount);
-				
-				vertexCount += 4;
-				indexCount += 6;
 			    }
 			}
 		    }
