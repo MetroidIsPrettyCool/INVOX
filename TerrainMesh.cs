@@ -47,11 +47,12 @@ namespace INVOX {
 				if ((blocks [x, y, z].visibility & (1 << i)) != 0) {
 				    // Add face vertexes
 				    for (int j = 0; j != 4; j++) {
-					positions.Add(Constants.faceVertices [i] [j * 3]     + (x % Constants.terrainMeshSize));
-					positions.Add(Constants.faceVertices [i] [j * 3 + 1] + (y % Constants.terrainMeshSize));
-					positions.Add(Constants.faceVertices [i] [j * 3 + 2] + (z % Constants.terrainMeshSize));
+					positions.Add(Constants.faceVertices [i] [j*3]   + (x % Constants.terrainMeshSize));
+					positions.Add(Constants.faceVertices [i] [j*3+1] + (y % Constants.terrainMeshSize));
+					positions.Add(Constants.faceVertices [i] [j*3+2] + (z % Constants.terrainMeshSize));
 				    }
 
+				    // Rewrite this later to use blockType
 				    for (int j = 0; j != 4; j++) {
 					colors.Add(i == 3 ? .9f : (30 - (i / 2))/30f);
 					colors.Add(0);
