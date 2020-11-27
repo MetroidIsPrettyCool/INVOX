@@ -20,7 +20,7 @@ namespace INVOX {
 	private readonly Matrix4 modelMatrix;
 
 	// Temp constructor
-	public TerrainMesh (Block [,,] blocks, int offX, int offY, int offZ) {
+	public TerrainMesh (List <BlockType> blockTypes, Block [,,] blocks, int offX, int offY, int offZ) {
 
 	    offX *= Constants.terrainMeshSize;
 	    offY *= Constants.terrainMeshSize;
@@ -52,12 +52,14 @@ namespace INVOX {
 					positions.Add(Constants.faceVertices [i] [j*3+2] + (z % Constants.terrainMeshSize));
 				    }
 
+				    float lightvalue = ((blocks [x,y,z].lighting + 15) - (i == 1 ? 3 : i/2)) / 30f;
+				    
 				    // Rewrite this later to use blockType
 				    for (int j = 0; j != 4; j++) {
-					colors.Add(i == 3 ? .9f : (30 - (i / 2))/30f);
-					colors.Add(0);
-					colors.Add(0);
-					colors.Add(1);
+				        colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].color.R * lightvalue);
+					colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].color.G * lightvalue);
+					colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].color.B * lightvalue);
+					colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].color.A);
 				    }
 
 				    vertexIndices.Add(3 + (uint)vertexCount);

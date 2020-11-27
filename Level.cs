@@ -27,7 +27,9 @@ namespace INVOX {
 	public Level () {
 
 	    // Temp, will replace later with a real system that creates the level's block pallete
-	    blockTypes.Add(new BlockType());
+	    blockTypes.Add(new BlockType(Color4.SpringGreen));
+	    blockTypes.Add(new BlockType(Color4.BlueViolet));
+	    blockTypes.Add(new BlockType(Color4.Beige));
 	    
 	    Console.WriteLine("Generating blocks");
 
@@ -39,9 +41,8 @@ namespace INVOX {
 		    for (int z = 0; z != 128; z++) {
 			if (r.Next(2) == 0) {
 			    blocks[x,y,z].isntAir = true;
-			}
-			else {
-			    blocks [x,y,z].isntAir = false;
+			    blocks[x,y,z].blockTypeIndex = (short)r.Next(3);
+			    blocks[x,y,z].lighting = 15;
 			}
 		    }
 		}
@@ -70,7 +71,7 @@ namespace INVOX {
 	}
 
 	public void generateMeshAt (int x, int y, int z) {
-	    meshes [x, y, z] = new TerrainMesh(blocks, x, y, z);
+	    meshes [x, y, z] = new TerrainMesh(blockTypes, blocks, x, y, z);
 	    Console.WriteLine("Generated mesh @ " + x + "," + y + "," + z);
 	}
 	
