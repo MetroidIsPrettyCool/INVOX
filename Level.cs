@@ -27,9 +27,10 @@ namespace INVOX {
 	public Level () {
 
 	    // Temp, will replace later with a real system that creates the level's block pallete
-	    blockTypes.Add(new BlockType(Color4.SpringGreen));
-	    blockTypes.Add(new BlockType(Color4.BlueViolet));
-	    blockTypes.Add(new BlockType(Color4.Beige));
+
+	    blockTypes.Add(new BlockType(Color4.LightGray));
+	    blockTypes.Add(new BlockType(Color4.Brown));
+	    blockTypes.Add(new BlockType(Color4.Green));
 	    
 	    Console.WriteLine("Generating blocks");
 
@@ -37,21 +38,45 @@ namespace INVOX {
 
 	    // Create our blocks
 	    for (int x = 0; x != 128; x++) {
-		for (int y = 0; y != 128; y++) {
+		for (int y = 0; y != 123; y++) {
 		    for (int z = 0; z != 128; z++) {
 			if (r.Next(2) == 0) {
 			    blocks[x,y,z].isntAir = true;
-			    blocks[x,y,z].blockTypeIndex = (short)r.Next(3);
+			    blocks[x,y,z].blockTypeIndex = 0;
 			    blocks[x,y,z].lighting = 15;
 			}
 		    }
 		}
 	    }
 
-	    // Set up the visibility values for each block
 	    for (int x = 0; x != 128; x++) {
-		for (int y = 0; y != 128; y++) {
+		for (int y = 123; y != 127; y++) {
 		    for (int z = 0; z != 128; z++) {
+			if (r.Next(2) == 0) {
+			    blocks[x,y,z].isntAir = true;
+			    blocks[x,y,z].blockTypeIndex = 1;
+			    blocks[x,y,z].lighting = 15;
+			}
+		    }
+		}
+	    }
+
+	    for (int x = 0; x != 128; x++) {
+		for (int y = 127; y != 128; y++) {
+		    for (int z = 0; z != 128; z++) {
+			if (r.Next(2) == 0) {
+			    blocks[x,y,z].isntAir = true;
+			    blocks[x,y,z].blockTypeIndex = 2;
+			    blocks[x,y,z].lighting = 15;
+			}
+		    }
+		}
+	    }
+	    
+	    // Set up the visibility values for each block
+	    for (int x = 0; x != 256; x++) {
+		for (int y = 0; y != 256; y++) {
+		    for (int z = 0; z != 256; z++) {
 			if (blocks [x,y,z].isntAir) {
 			    // Face visibility
 			    if (y == Constants.levelSizeY || !blocks [x, y + 1, z].isntAir || !blockTypes[blocks [x, y + 1, z].blockTypeIndex].isOpaque) blocks [x,y,z].visibility |=  1;
@@ -72,7 +97,7 @@ namespace INVOX {
 
 	public void generateMeshAt (int x, int y, int z) {
 	    meshes [x, y, z] = new TerrainMesh(blockTypes, blocks, x, y, z);
-	    Console.WriteLine("Generated mesh @ " + x + "," + y + "," + z);
+	    //Console.WriteLine("Generated mesh @ " + x + "," + y + "," + z);
 	}
 	
 	public void drawLevel (Shader shader, Camera camera) {

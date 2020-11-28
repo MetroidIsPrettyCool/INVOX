@@ -56,10 +56,10 @@ namespace INVOX {
 				    
 				    // Rewrite this later to use blockType
 				    for (int j = 0; j != 4; j++) {
-				        colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].color.R * lightvalue);
-					colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].color.G * lightvalue);
-					colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].color.B * lightvalue);
-					colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].color.A);
+				        colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].getFaceColor(i).R * lightvalue);
+					colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].getFaceColor(i).G * lightvalue);
+					colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].getFaceColor(i).B * lightvalue);
+					colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].getFaceColor(i).A);
 				    }
 
 				    vertexIndices.Add(3 + (uint)vertexCount);

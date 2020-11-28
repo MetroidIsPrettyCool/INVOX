@@ -8,14 +8,14 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 namespace INVOX {
-    public class Window : GameWindow {
+    class Window : GameWindow {
 
 	private Shader terrainShader;
 
-	// Temp camera for testing
-	Camera camera;
+	public Camera camera;
 
-	// Temp level for testing
+	Player testPlayer;
+
 	Level testLevel;
 
 	// Temp for now, will eventually move into a seperate thread / class
@@ -55,7 +55,7 @@ namespace INVOX {
         }
 
         protected override void OnUpdateFrame (FrameEventArgs e) {
-
+	    
 	    if (KeyboardState.IsKeyPressed(Keys.GraveAccent)) {
 		CursorGrabbed = !CursorGrabbed;
 		if (!CursorGrabbed) CursorVisible = true;
@@ -63,18 +63,11 @@ namespace INVOX {
 	    
             if (KeyboardState.IsKeyDown(Keys.Q)) Close();
 	    
-	    // Temp camera controls
 	    if (CursorGrabbed) {
-		if (KeyboardState.IsKeyDown(Keys.W)) camera.Position += camera.Front * (float)e.Time * 5.5f;
-		if (KeyboardState.IsKeyDown(Keys.S)) camera.Position -= camera.Front * (float)e.Time * 5.5f;
-		if (KeyboardState.IsKeyDown(Keys.A)) camera.Position -= camera.Right * (float)e.Time * 5.5f;
-		if (KeyboardState.IsKeyDown(Keys.D)) camera.Position += camera.Right * (float)e.Time * 5.5f;
-		if (KeyboardState.IsKeyDown(Keys.Space)) camera.Position += camera.Up * (float)e.Time * 5.5f;
-		if (KeyboardState.IsKeyDown(Keys.LeftShift)) camera.Position -= camera.Up * (float)e.Time * 5.5f;
-
-		camera.Pitch -= MouseState.Delta.Y * 0.3f;
-		camera.Yaw += MouseState.Delta.X * 0.3f;
+		testPlayer.updateEntity(testLevel, this, e);
 	    }
+
+	    camera.updateCamera();
 	    
             base.OnUpdateFrame(e);
         }
@@ -88,9 +81,11 @@ namespace INVOX {
 	    	    
 	    terrainShader = new Shader("terrain.vert", "terrain.frag");
 
-	    camera = new Camera(new Vector3(1.5f, 1.5f, 1.5f));
-
 	    testLevel = new Level();
+
+	    testPlayer = new Player(new Vector3(5, 130, 5));
+
+	    camera = new Camera(testPlayer);
 	    
 	    base.OnLoad();
         }
@@ -102,7 +97,7 @@ namespace INVOX {
         protected override void OnResize (ResizeEventArgs e) {
             base.OnResize(e);
             GL.Viewport(0, 0, Size.X, Size.Y);
-	    camera.Aspect = (float)Size.X / Size.Y;
+	    //camera.Aspect = (float)Size.X / Size.Y;
         }
 
     }
