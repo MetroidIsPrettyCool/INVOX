@@ -103,11 +103,11 @@ namespace INVOX {
 	    modelMatrix = Matrix4.CreateTranslation(offX, offY, offZ);
 	}
 
-	public void drawMesh (Shader shader, Camera camera) {
+	public void drawMesh (Shader shader, Camera camera, Window window) {
 	    GL.BindVertexArray(meshVAO);
 	    
 	    shader.Use();
-	    Shader.setMat4(shader.Handle, modelMatrix * camera.getViewMatrix() * camera.getProjectionMatrix(), "mvp");
+	    Shader.setMat4(shader.Handle, modelMatrix * camera.getViewMatrix() * window.getProjectionMatrix(), "mvp");
 
 	    GL.DrawElements(PrimitiveType.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
 	}

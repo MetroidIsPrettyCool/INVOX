@@ -100,10 +100,10 @@ namespace INVOX {
 	    //Console.WriteLine("Generated mesh @ " + x + "," + y + "," + z);
 	}
 	
-	public void drawLevel (Shader shader, Camera camera) {
+	public void drawLevel (Shader shader, Camera camera, Window window) {
 	    foreach (TerrainMesh mesh in meshes) {
 		if (mesh != null)
-		    mesh.drawMesh(shader, camera);
+		    mesh.drawMesh(shader, camera, window);
 	    }
 	}
 	

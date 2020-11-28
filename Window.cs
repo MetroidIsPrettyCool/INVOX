@@ -14,6 +14,8 @@ namespace INVOX {
 
 	public Camera camera;
 
+	public float aspect, fov, near, far;
+	
 	Player testPlayer;
 
 	Level testLevel;
@@ -22,7 +24,12 @@ namespace INVOX {
 	int x = 0, y = 0, z = 0;
 	bool genMeshes = true;
 	
-	public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base (gameWindowSettings, nativeWindowSettings) { }
+	public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base (gameWindowSettings, nativeWindowSettings) {
+	    aspect = 16f/ 9;
+	    fov = MathHelper.DegreesToRadians(70);
+	    near = 0.01f;
+	    far = 500f;
+	}
 
         protected override void OnRenderFrame (FrameEventArgs e) {
 	    GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -47,7 +54,7 @@ namespace INVOX {
 		}
 	    }
 	    
-	    testLevel.drawLevel(terrainShader, camera);
+	    testLevel.drawLevel(terrainShader, camera, this);
 	    
             SwapBuffers();
 
@@ -94,10 +101,14 @@ namespace INVOX {
             base.OnUnload();
         }
 
+	public Matrix4 getProjectionMatrix () {
+	    return Matrix4.CreatePerspectiveFieldOfView(fov, aspect, near, far);
+	}
+
         protected override void OnResize (ResizeEventArgs e) {
             base.OnResize(e);
             GL.Viewport(0, 0, Size.X, Size.Y);
-	    //camera.Aspect = (float)Size.X / Size.Y;
+	    aspect = (float)Size.X / Size.Y;
         }
 
     }
