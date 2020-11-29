@@ -9,16 +9,16 @@ namespace INVOX {
     
     [StructLayout(LayoutKind.Sequential, Pack=1)]
     public struct Block {
-	public bool  isntAir; // True if the block is empty
-	public byte  visibility; // Bitfield, sorta. 1 = U, 2 = D, 4 = E, 8 = W, 16 = N, 32 = S, 64 = reserved, 128 = whole block's visibility. 0 indicates something isn't visible, 1 indicates it is visible
-	public byte  lighting; // Only uses the first four bytes, might put something else in the upper half later
-	public short blockTypeIndex; // Index into the level's blocktype array
+	public bool   isntAir;        // True if the block is empty (Plan to replace when air becomes an actual block type)
+	public byte   visibility;     // Bitfield, sorta. 1 = U, 2 = D, 4 = E, 8 = W, 16 = N, 32 = S, 64 = reserved, 128 = are any faces visible?
+	public byte   lighting;       // Only uses the first four bytes, might put something else in the upper half later
+	public ushort blockTypeIndex; // Index into the level's blocktype array
     }
     
     class Level {
 
 	public Block [,,] blocks = new Block [Constants.levelSizeX, Constants.levelSizeY, Constants.levelSizeZ];
-	public TerrainMesh [,,] meshes = new TerrainMesh [Constants.levelSizeX / Constants.terrainMeshSize, Constants.levelSizeY / Constants.terrainMeshSize, Constants.levelSizeZ / Constants.terrainMeshSize];
+	public ChunkMesh [,,] meshes = new ChunkMesh [Constants.levelSizeX / Constants.terrainMeshSize, Constants.levelSizeY / Constants.terrainMeshSize, Constants.levelSizeZ / Constants.terrainMeshSize];
 
 	public List <BlockType> blockTypes = new List <BlockType>();
 	
@@ -96,12 +96,12 @@ namespace INVOX {
 	}
 
 	public void generateMeshAt (int x, int y, int z) {
-	    meshes [x, y, z] = new TerrainMesh(blockTypes, blocks, x, y, z);
+	    meshes [x, y, z] = new ChunkMesh(blockTypes, blocks, x, y, z);
 	    //Console.WriteLine("Generated mesh @ " + x + "," + y + "," + z);
 	}
 	
 	public void drawLevel (Shader shader, Camera camera, Window window) {
-	    foreach (TerrainMesh mesh in meshes) {
+	    foreach (ChunkMesh mesh in meshes) {
 		if (mesh != null)
 		    mesh.drawMesh(shader, camera, window);
 	    }

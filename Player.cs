@@ -47,7 +47,7 @@ namespace INVOX {
 	    headOffset = new Vector3(.3f, 1.63f, .3f);
 	}
 
-	public void updateEntity (Level level, Window window, FrameEventArgs e) {
+	new public void updateEntity (Level level, Window window, FrameEventArgs e) {
 
 	    Vector3 newPosition = position;
 	    

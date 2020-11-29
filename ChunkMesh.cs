@@ -4,7 +4,7 @@ using OpenTK.Mathematics;
 using System.Collections.Generic;
 
 namespace INVOX {
-    class TerrainMesh {
+    class ChunkMesh {
 
 	private static List<int> VAOs = new List<int>();
 	private static List<int> VBOs = new List<int>();
@@ -19,8 +19,7 @@ namespace INVOX {
 	
 	private readonly Matrix4 modelMatrix;
 
-	// Temp constructor
-	public TerrainMesh (List <BlockType> blockTypes, Block [,,] blocks, int offX, int offY, int offZ) {
+	public ChunkMesh (List <BlockType> blockTypes, Block [,,] blocks, int offX, int offY, int offZ) {
 
 	    offX *= Constants.terrainMeshSize;
 	    offY *= Constants.terrainMeshSize;
