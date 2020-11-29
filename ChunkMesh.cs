@@ -19,11 +19,11 @@ namespace INVOX {
 	
 	private readonly Matrix4 modelMatrix;
 
-	public ChunkMesh (List <BlockType> blockTypes, Block [,,] blocks, int offX, int offY, int offZ) {
+	public ChunkMesh (Level level, int offX, int offY, int offZ) {
 
-	    offX *= Constants.terrainMeshSize;
-	    offY *= Constants.terrainMeshSize;
-	    offZ *= Constants.terrainMeshSize;
+	    offX *= Constants.chunkSize;
+	    offY *= Constants.chunkSize;
+	    offZ *= Constants.chunkSize;
 	    
 	    meshVAO = GL.GenVertexArray();
 	    VAOs.Add(meshVAO);
@@ -37,28 +37,28 @@ namespace INVOX {
 	    indexCount = 0;
 
 	    // Clean up later
-	    for (int x = offX; x != Constants.terrainMeshSize + offX; x++) {
-		for (int y = offY; y != Constants.terrainMeshSize + offY; y++) {
-		    for (int z = offZ; z != Constants.terrainMeshSize + offZ; z++) {
-			if (blocks [x,y,z].isntAir && (blocks [x,y,z].visibility & 128) != 0) {
+	    for (int x = offX; x != Constants.chunkSize + offX; x++) {
+		for (int y = offY; y != Constants.chunkSize + offY; y++) {
+		    for (int z = offZ; z != Constants.chunkSize + offZ; z++) {
+			if (level.getBlockAt(x,y,z).isntAir && (level.getBlockAt(x,y,z).visibility & 128) != 0) {
 			    // Go through each face and check it's visibility, and if it's visible, add it to the mesh
 			    for (int i = 0; i != 6; i++) {
-				if ((blocks [x, y, z].visibility & (1 << i)) != 0) {
+				if ((level.getBlockAt(x, y, z).visibility & (1 << i)) != 0) {
 				    // Add face vertexes
 				    for (int j = 0; j != 4; j++) {
-					positions.Add(Constants.faceVertices [i] [j*3]   + (x % Constants.terrainMeshSize));
-					positions.Add(Constants.faceVertices [i] [j*3+1] + (y % Constants.terrainMeshSize));
-					positions.Add(Constants.faceVertices [i] [j*3+2] + (z % Constants.terrainMeshSize));
+					positions.Add(Constants.faceVertices [i] [j*3]   + (x % Constants.chunkSize));
+					positions.Add(Constants.faceVertices [i] [j*3+1] + (y % Constants.chunkSize));
+					positions.Add(Constants.faceVertices [i] [j*3+2] + (z % Constants.chunkSize));
 				    }
 
-				    float lightvalue = ((blocks [x,y,z].lighting + 15) - (i == 1 ? 3 : i/2)) / 30f;
+				    float lightvalue = ((level.getBlockAt(x,y,z).lighting + 15) - (i == 1 ? 3 : i/2)) / 30f;
 				    
 				    // Rewrite this later to use blockType
 				    for (int j = 0; j != 4; j++) {
-				        colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].getFaceColor(i).R * lightvalue);
-					colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].getFaceColor(i).G * lightvalue);
-					colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].getFaceColor(i).B * lightvalue);
-					colors.Add(blockTypes[blocks [x,y,z].blockTypeIndex].getFaceColor(i).A);
+				        colors.Add(level.blockTypes[level.getBlockAt(x,y,z).blockTypeIndex].getFaceColor(i).R * lightvalue);
+					colors.Add(level.blockTypes[level.getBlockAt(x,y,z).blockTypeIndex].getFaceColor(i).G * lightvalue);
+					colors.Add(level.blockTypes[level.getBlockAt(x,y,z).blockTypeIndex].getFaceColor(i).B * lightvalue);
+					colors.Add(level.blockTypes[level.getBlockAt(x,y,z).blockTypeIndex].getFaceColor(i).A);
 				    }
 
 				    vertexIndices.Add(3 + (uint)vertexCount);

@@ -75,7 +75,7 @@ namespace INVOX {
 		for (int y = (int)(hitbox[0].Y + posY); y <= (int)(hitbox[1].Y + posY); y++) {
 		    for (int z = (int)(hitbox[0].Z + posZ); z <= (int)(hitbox[1].Z + posZ); z++) {
 			if (x >= Constants.levelSizeX || x < 0 || y >= Constants.levelSizeY || y < 0 || z >= Constants.levelSizeZ || z < 0) return true;
-			if (level.blocks[x,y,z].isntAir && level.blockTypes[level.blocks [x,y,z].blockTypeIndex].isSolid) return true;
+			if (level.getBlockAt(x,y,z).isntAir && level.blockTypes[level.getBlockAt(x,y,z).blockTypeIndex].isSolid) return true;
 		    }
 		}
 	    }

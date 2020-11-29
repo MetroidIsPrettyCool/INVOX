@@ -13,7 +13,7 @@ namespace INVOX {
 	public const int levelSizeX = 1024;
 	public const int levelSizeY = 2048;
 	public const int levelSizeZ = 1024;
-	public const int terrainMeshSize = 64;
+	public const int chunkSize = 64;
 	
 	public static readonly float [] uFaceVertices = {
 	    1, 1, 1,

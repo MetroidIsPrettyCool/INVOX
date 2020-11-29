@@ -40,15 +40,15 @@ namespace INVOX {
 		if (genMeshes) {
 		    testLevel.generateMeshAt(x, y, z);
 		    x++;
-		    if (x == Constants.levelSizeX / Constants.terrainMeshSize) {
+		    if (x == Constants.levelSizeX / Constants.chunkSize) {
 			y++;
 			x = 0;
 		    }
-		    if (y == Constants.levelSizeY / Constants.terrainMeshSize) {
+		    if (y == Constants.levelSizeY / Constants.chunkSize) {
 			z++;
 			y = 0;
 		    }
-		    if (z == Constants.levelSizeZ / Constants.terrainMeshSize) {
+		    if (z == Constants.levelSizeZ / Constants.chunkSize) {
 			genMeshes = false;
 		    }
 		}

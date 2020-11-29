@@ -17,8 +17,10 @@ namespace INVOX {
     
     class Level {
 
-	public Block [,,] blocks = new Block [Constants.levelSizeX, Constants.levelSizeY, Constants.levelSizeZ];
-	public ChunkMesh [,,] meshes = new ChunkMesh [Constants.levelSizeX / Constants.terrainMeshSize, Constants.levelSizeY / Constants.terrainMeshSize, Constants.levelSizeZ / Constants.terrainMeshSize];
+	//public Block [,,] blocks = new Block [Constants.levelSizeX, Constants.levelSizeY, Constants.levelSizeZ];
+	public ChunkMesh [,,] meshes = new ChunkMesh [Constants.levelSizeX / Constants.chunkSize, Constants.levelSizeY / Constants.chunkSize, Constants.levelSizeZ / Constants.chunkSize];
+
+	public Chunk [,,] chunks = new Chunk [Constants.levelSizeX / Constants.chunkSize, Constants.levelSizeY / Constants.chunkSize, Constants.levelSizeZ / Constants.chunkSize];
 
 	public List <BlockType> blockTypes = new List <BlockType>();
 	
@@ -32,18 +34,27 @@ namespace INVOX {
 	    blockTypes.Add(new BlockType(Color4.Brown));
 	    blockTypes.Add(new BlockType(Color4.Green));
 	    
-	    Console.WriteLine("Generating blocks");
-
-	    Random r = new Random();
-
+	    // Init our chunk objects
+	    for (int x = 0; x != chunks.GetLength(0); x++) {
+		for (int y = 0; y != chunks.GetLength(1); y++) {
+		    for (int z = 0; z != chunks.GetLength(2); z++) {
+			chunks [x,y,z] = new Chunk();
+		    }
+		}
+	    }
+	    
 	    // Create our blocks
+	    Random r = new Random();
+		    
 	    for (int x = 0; x != 128; x++) {
 		for (int y = 0; y != 123; y++) {
 		    for (int z = 0; z != 128; z++) {
 			if (r.Next(2) == 0) {
-			    blocks[x,y,z].isntAir = true;
-			    blocks[x,y,z].blockTypeIndex = 0;
-			    blocks[x,y,z].lighting = 15;
+			    Block block = new Block();
+			    block.isntAir = true;
+			    block.blockTypeIndex = 2;
+			    block.lighting = 15;
+			    setBlockAt(x,y,z,block);
 			}
 		    }
 		}
@@ -53,9 +64,11 @@ namespace INVOX {
 		for (int y = 123; y != 127; y++) {
 		    for (int z = 0; z != 128; z++) {
 			if (r.Next(2) == 0) {
-			    blocks[x,y,z].isntAir = true;
-			    blocks[x,y,z].blockTypeIndex = 1;
-			    blocks[x,y,z].lighting = 15;
+			    Block block = new Block();
+			    block.isntAir = true;
+			    block.blockTypeIndex = 1;
+			    block.lighting = 15;
+			    setBlockAt(x,y,z,block);
 			}
 		    }
 		}
@@ -65,9 +78,11 @@ namespace INVOX {
 		for (int y = 127; y != 128; y++) {
 		    for (int z = 0; z != 128; z++) {
 			if (r.Next(2) == 0) {
-			    blocks[x,y,z].isntAir = true;
-			    blocks[x,y,z].blockTypeIndex = 2;
-			    blocks[x,y,z].lighting = 15;
+			    Block block = new Block();
+			    block.isntAir = true;
+			    block.blockTypeIndex = 2;
+			    block.lighting = 15;
+			    setBlockAt(x,y,z,block);
 			}
 		    }
 		}
@@ -77,16 +92,19 @@ namespace INVOX {
 	    for (int x = 0; x != 256; x++) {
 		for (int y = 0; y != 256; y++) {
 		    for (int z = 0; z != 256; z++) {
-			if (blocks [x,y,z].isntAir) {
+			if (getBlockAt(x,y,z).isntAir) {
+			    Block block = getBlockAt(x,y,z);
 			    // Face visibility
-			    if (y == Constants.levelSizeY || !blocks [x, y + 1, z].isntAir || !blockTypes[blocks [x, y + 1, z].blockTypeIndex].isOpaque) blocks [x,y,z].visibility |=  1;
-			    if (y == 0                    || !blocks [x, y - 1, z].isntAir || !blockTypes[blocks [x, y - 1, z].blockTypeIndex].isOpaque) blocks [x,y,z].visibility |=  2;
-			    if (x == Constants.levelSizeX || !blocks [x + 1, y, z].isntAir || !blockTypes[blocks [x + 1, y, z].blockTypeIndex].isOpaque) blocks [x,y,z].visibility |=  4;
-			    if (x == 0                    || !blocks [x - 1, y, z].isntAir || !blockTypes[blocks [x - 1, y, z].blockTypeIndex].isOpaque) blocks [x,y,z].visibility |=  8;
-			    if (z == Constants.levelSizeZ || !blocks [x, y, z + 1].isntAir || !blockTypes[blocks [x, y, z + 1].blockTypeIndex].isOpaque) blocks [x,y,z].visibility |= 16;
-			    if (z == 0                    || !blocks [x, y, z - 1].isntAir || !blockTypes[blocks [x, y, z - 1].blockTypeIndex].isOpaque) blocks [x,y,z].visibility |= 32;
+			    if (y == Constants.levelSizeY || !getBlockAt(x, y + 1, z).isntAir || !blockTypes[getBlockAt(x, y + 1, z).blockTypeIndex].isOpaque) block.visibility |=  1;
+			    if (y == 0                    || !getBlockAt(x, y - 1, z).isntAir || !blockTypes[getBlockAt(x, y - 1, z).blockTypeIndex].isOpaque) block.visibility |=  2;
+			    if (x == Constants.levelSizeX || !getBlockAt(x + 1, y, z).isntAir || !blockTypes[getBlockAt(x + 1, y, z).blockTypeIndex].isOpaque) block.visibility |=  4;
+			    if (x == 0                    || !getBlockAt(x - 1, y, z).isntAir || !blockTypes[getBlockAt(x - 1, y, z).blockTypeIndex].isOpaque) block.visibility |=  8;
+			    if (z == Constants.levelSizeZ || !getBlockAt(x, y, z + 1).isntAir || !blockTypes[getBlockAt(x, y, z + 1).blockTypeIndex].isOpaque) block.visibility |= 16;
+			    if (z == 0                    || !getBlockAt(x, y, z - 1).isntAir || !blockTypes[getBlockAt(x, y, z - 1).blockTypeIndex].isOpaque) block.visibility |= 32;
 			    // If, at the end of all this, the block has any faces visible, set its total block visibility to true
-			    if ((blocks [x,y,z].visibility & 63) != 0) blocks [x,y,z].visibility |= 128;
+			    if ((block.visibility & 63) != 0) block.visibility |= 128;
+			    // Set the block @ the position
+			    setBlockAt(x,y,z, block);
 			}
 		    }
 		}
@@ -95,9 +113,16 @@ namespace INVOX {
 	    Console.WriteLine("Level generated");
 	}
 
+	public Block getBlockAt (int x, int y, int z) {
+	    return chunks [x / Constants.chunkSize, y / Constants.chunkSize, z / Constants.chunkSize].blocks [x % Constants.chunkSize, y % Constants.chunkSize, z % Constants.chunkSize];
+	}
+
+	public void setBlockAt (int x, int y, int z, Block block) {
+	    chunks [x / Constants.chunkSize, y / Constants.chunkSize, z / Constants.chunkSize].blocks [x % Constants.chunkSize, y % Constants.chunkSize, z % Constants.chunkSize] = block;
+	}
+	
 	public void generateMeshAt (int x, int y, int z) {
-	    meshes [x, y, z] = new ChunkMesh(blockTypes, blocks, x, y, z);
-	    //Console.WriteLine("Generated mesh @ " + x + "," + y + "," + z);
+	    meshes [x, y, z] = new ChunkMesh(this, x, y, z);
 	}
 	
 	public void drawLevel (Shader shader, Camera camera, Window window) {
@@ -106,6 +131,5 @@ namespace INVOX {
 		    mesh.drawMesh(shader, camera, window);
 	    }
 	}
-	
     }
 }
