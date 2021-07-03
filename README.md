@@ -1,2 +1,2 @@
 # INVOX
-Development of the Invox Client and Server
+Development of the Invox Client (and Server ?)
